@@ -28,7 +28,7 @@ import { getCurrentUser } from '@/services/user-service';
 import { setIsAuth } from '@/slices/auth';
 import { setProfile } from '@/slices/user';
 import { useAppDispatch } from '@/store';
-import { setStorageToken } from '@/utils/AuthHelper';
+import { setAccessToken } from '@/utils/AuthHelper';
 import Logger from '@/utils/Logger';
 
 interface LoginFormInputs {
@@ -66,28 +66,25 @@ export default function Login() {
         username: values.username,
         password: values.password,
       });
-
-      if (respAuth.data?.accessToken) {
-        setStorageToken(remember)
-          .accessToken(respAuth.data.accessToken)
-          .refreshToken(respAuth.data.refreshToken);
-        const respUser = await getCurrentUser();
-        dispatch(setProfile(respUser.data));
+      const accessToken = respAuth.data?.accessToken;
+      const userProfile = respAuth.data?.user; 
+      if (accessToken && userProfile) {
+        setAccessToken(accessToken);
+        // Cập nhật state của Redux/Context
+        // Thông tin user đã có sẵn từ response login, không cần gọi /me nữa
+        dispatch(setProfile(userProfile));
         dispatch(setIsAuth(true));
-        setError('');
+        // Thông báo & chuyển hướng
         notify({
           message: t('login_success'),
           severity: 'success',
         });
-        let route = ROUTE_PATH.HOME;
-        if (!_.isNull(location.state) && location.state !== ROUTE_PATH.LOGIN) {
-          route = location.state;
-        }
-        navigate(route);
+        navigate(ROUTE_PATH.MANAGE, { replace: true});
       } else {
-        setFocus('username');
-        setError(respAuth.message);
-        throw new Error(respAuth.message);
+        notify({
+          message: respAuth.message || 'Login failed, no access token returned.',
+          severity: 'error'
+        });
       }
     } catch (error: any) {
       Logger.log(error);
