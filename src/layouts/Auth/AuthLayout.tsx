@@ -3,27 +3,43 @@ import { Outlet } from 'react-router-dom';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
+import bg_auth from '@/assets/images/users/bg-auth.png'
 
 const AuthContainer = styled(Stack)(({ theme }) => ({
   minHeight: '100%',
-  alignItems: 'center',
+  backgroundImage: `url(${bg_auth})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+
+  alignItems: 'flex-end',
   justifyContent: 'center',
-  padding: theme.spacing(2),
-  [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(4),
+  [theme.breakpoints.down('lg')]: {
+    alignItems: 'center',
   },
-  '&::before': {
-    content: '""',
-    display: 'block',
-    position: 'absolute',
-    zIndex: -1,
-    inset: 0,
-    backgroundImage: 'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
-    backgroundRepeat: 'no-repeat',
-    ...theme.applyStyles('dark', {
-      backgroundImage: 'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
-    }),
-  },
+  [theme.breakpoints.up('lg')]: {
+    paddingRight: theme.spacing(20),
+  }
+  // width: '100%',
+  // position: 'relative',
+  // alignItems: 'center',
+  // justifyContent: 'center',
+  // overflow: 'hidden',
+  // '&::before': {
+  //   content: '""',
+  //   position: 'fixed',
+  //   top: 0,
+  //   left: 0,
+  //   right: 0,
+  //   bottom: 0,
+
+  //   backgroundImage: `url(${bg_auth})`,
+  //   backgroundSize: 'cover',       // phủ toàn màn hình
+  //   backgroundPosition: 'center',  // căn giữa
+  //   backgroundRepeat: 'no-repeat',
+
+  //   zIndex: -1,
+  // },
 }));
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -33,8 +49,12 @@ const Card = styled(MuiCard)(({ theme }) => ({
   padding: theme.spacing(4),
   gap: theme.spacing(2),
   margin: 'auto',
-  [theme.breakpoints.up('sm')]: {
+  borderRadius: theme.spacing(3),
+  [theme.breakpoints.down('lg')]: {
     maxWidth: '450px',
+  },
+  [theme.breakpoints.up('lg')]: {
+    maxWidth: '500px',
   },
   boxShadow:
     'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',

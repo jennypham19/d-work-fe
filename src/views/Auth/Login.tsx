@@ -10,8 +10,6 @@ import { LoadingButton } from '@mui/lab';
 import {
   Alert,
   Box,
-  Checkbox,
-  FormControlLabel,
   IconButton,
   InputAdornment,
   Typography,
@@ -24,15 +22,15 @@ import useBoolean from '@/hooks/useBoolean';
 import useNotification from '@/hooks/useNotification';
 import { loginSchema } from '@/schemas/auth-schema';
 import { signIn } from '@/services/auth-service';
-import { getCurrentUser } from '@/services/user-service';
 import { setIsAuth } from '@/slices/auth';
 import { setProfile } from '@/slices/user';
 import { useAppDispatch } from '@/store';
 import { setAccessToken } from '@/utils/AuthHelper';
 import Logger from '@/utils/Logger';
+import { COLORS } from '@/constants/colors';
 
 interface LoginFormInputs {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -53,17 +51,16 @@ export default function Login() {
   const notify = useNotification();
   const [_error, setError] = useState('');
   const [showPassword, setShowPassword] = useBoolean(false);
-  const [remember, setRemember] = useState(false);
 
   useEffect(() => {
-    setFocus('username');
+    setFocus('email');
   }, [setFocus]);
 
   const onSubmit = async (values: LoginFormInputs) => {
     setLoading.on();
     try {
       const respAuth = await signIn({
-        username: values.username,
+        email: values.email,
         password: values.password,
       });
       const accessToken = respAuth.data?.accessToken;
@@ -87,6 +84,7 @@ export default function Login() {
         });
       }
     } catch (error: any) {
+      setError(error)
       Logger.log(error);
     } finally {
       setLoading.off();
@@ -94,7 +92,7 @@ export default function Login() {
   };
 
   return (
-    <Page title='Login'>
+    <Page title='D-Work Login'>
       <Box>
         <Typography
           component='h1'
@@ -102,8 +100,9 @@ export default function Login() {
           fontWeight={500}
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
-          Welcome to Telecom!
+          Đăng nhập tài khoản
         </Typography>
+        <Typography fontWeight={400}>Chào mừng bạn đến với D.Work</Typography>
       </Box>
       {_error && (
         <Alert variant='filled' severity='warning'>
@@ -122,15 +121,16 @@ export default function Login() {
       >
         <ControllerTextField<LoginFormInputs>
           controllerProps={{
-            name: 'username',
+            name: 'email',
             defaultValue: '',
             control: control,
           }}
           textFieldProps={{
-            label: 'Username',
-            error: !!errors.username,
-            helperText: errors.username?.message,
-            sx: { ariaLabel: 'username' },
+            label: 'Email',
+            error: !!errors.email,
+            helperText: errors.email?.message,
+            sx: { ariaLabel: 'email' },
+            placeholder:'Nhập nội dung...'
           }}
           prefixIcon={Email}
         />
@@ -145,6 +145,7 @@ export default function Login() {
             type: showPassword ? 'text' : 'password',
             error: !!errors.password,
             helperText: errors.password?.message,
+            placeholder:'Nhập nội dung...',
             slotProps: {
               input: {
                 endAdornment: (
@@ -168,32 +169,25 @@ export default function Login() {
             <Typography
               color='primary'
               component={RouterLink}
-              to={`/${ROUTE_PATH.AUTH}/${ROUTE_PATH.FORGOT_PASSWORD}`}
-              sx={{ textAlign: 'end', display: 'block' }}
+              to={`/${ROUTE_PATH.FORGOT_PASSWORD}`}
+              sx={{ textAlign: 'end', display: 'block', color: 'red' }}
             >
-              Forgot password?
+              Quên mật khẩu?
             </Typography>
           </Box>
-          <FormControlLabel
-            label={'Remember me'}
-            control={
-              <Checkbox checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-            }
-          />
         </div>
-        <LoadingButton loading={_loading} type='submit' variant='contained' fullWidth>
-          Login
+        <LoadingButton 
+          loading={_loading} type='submit' variant='outlined' 
+          sx={{ 
+            border: `1px solid ${COLORS.BASE}`, color: COLORS.BASE,
+            "&:hover": {
+              bgcolor: COLORS.BASE,
+              color: '#fff'
+            }
+          }} fullWidth
+        >
+          Đăng nhập
         </LoadingButton>
-        {/* <Box display='flex' justifyContent='center' alignItems='center' flexWrap='wrap' gap={2}>
-          <Typography>Don't have an account</Typography>
-          <Typography
-            to={`/${ROUTE_PATH.AUTH}/${ROUTE_PATH.REGISTRATION}`}
-            component={RouterLink}
-            color='primary'
-          >
-            Create an account
-          </Typography>
-        </Box> */}
       </Box>
     </Page>
   );

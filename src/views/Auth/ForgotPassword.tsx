@@ -16,6 +16,7 @@ import { ROUTE_PATH } from '@/constants/routes';
 import useBoolean from '@/hooks/useBoolean';
 import { usernameValidateSchema } from '@/schemas/auth-schema';
 import { verifyEmail } from '@/services/auth-service';
+import { COLORS } from '@/constants/colors';
 
 const forgotPasswordSchema = object().shape({
   username: usernameValidateSchema,
@@ -62,17 +63,17 @@ export default function ForgotPassword() {
   };
 
   return (
-    <Page title='Forgot Password'>
+    <Page title='D.Work Quên mật khẩu'>
       <Box
         component='form'
         onSubmit={handleSubmit(onSubmit)}
         sx={{ maxWidth: 400, margin: 'auto' }}
       >
-        <Typography variant='h4' component='h1' gutterBottom>
-          Forgot Password
+        <Typography variant='h4' component='h1' fontWeight={500} gutterBottom>
+          Quên mật khẩu
         </Typography>
-        <Typography variant='body1' sx={{ mb: 2 }}>
-          Enter your email address and we'll send you a link to reset your password.
+        <Typography variant='body1' fontWeight={400} sx={{ mb: 2 }}>
+          Nhập địa chỉ email của bạn và chúng tôi sẽ gửi mã xác nhận cho bạn
         </Typography>
 
         {_hasErrors === true && (
@@ -105,17 +106,17 @@ export default function ForgotPassword() {
           type='submit'
           variant='contained'
           fullWidth
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, bgcolor: COLORS.BASE }}
         >
-          Submit
+          Gửi
         </LoadingButton>
         <Button
-          onClick={() => navigate(`/${ROUTE_PATH.AUTH}/${ROUTE_PATH.LOGIN}`)}
+          onClick={() => navigate(`/`)}
           variant='outlined'
           fullWidth
           sx={{ mt: 2 }}
         >
-          Back to login
+          Quay lại đăng nhập
         </Button>
       </Box>
     </Page>

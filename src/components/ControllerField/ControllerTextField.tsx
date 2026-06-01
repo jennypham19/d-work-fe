@@ -1,3 +1,4 @@
+import { COLORS } from '@/constants/colors';
 import { SvgIconComponent } from '@mui/icons-material';
 import { TextField, TextFieldProps } from '@mui/material';
 import { ReactNode } from 'react';
@@ -34,6 +35,18 @@ export default function ControllerTextField<T extends FieldValues>({
             input: {
               size: 'medium',
               startAdornment: PrefixIcon ? <PrefixIcon color='action' sx={{ mr: 1 }} /> : null,
+              sx: {
+                "& .MuiOutlinedInput-notchedOutline":{
+                  border: `1px solid ${COLORS.BASE}`,
+                  borderRadius:"10px",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  border: `1px solid ${COLORS.BASE}`,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  border: `1px solid ${COLORS.BASE}`,
+                }
+              },
               ...textFieldProps?.slotProps?.input,
             },
           }}
