@@ -30,6 +30,7 @@
     "japan-postal-code": "^0.3.0",
     "lexical": "^0.18.0",
     "lodash": "^4.17.21",
+    "motion": "^12.42.2",
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
     "papaparse": "^5.4.1",

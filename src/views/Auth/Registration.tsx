@@ -15,8 +15,12 @@ import useBoolean from '@/hooks/useBoolean';
 import useNotification from '@/hooks/useNotification';
 import { registrationSchema } from '@/schemas/auth-schema';
 import { signUp } from '@/services/auth-service';
+import useBreakpoints from '@/hooks/useBreakpoints';
+import RegisterMobile from '@/layouts/Breakpoints/Mobile/RegisterMobile';
+import RegisterDesktop from '@/layouts/Breakpoints/Desktop/RegisterDesktop';
 
-interface RegistrationFormInputs {
+export interface RegistrationFormInputs {
+  fullName: string
   email: string;
   password: string;
   confirmPassword: string;
@@ -34,12 +38,16 @@ export default function Registration() {
   } = useForm<RegistrationFormInputs>({
     resolver: yupResolver(registrationSchema),
   });
+  const md = useBreakpoints('md');
   const password = watch('password');
   const [_loading, setLoading] = useBoolean();
   const navigate = useNavigate();
   const notify = useNotification();
   const { t } = useTranslation('auth');
   const [_error, setError] = useState('');
+  const [showPassword, setShowPassword] = useBoolean(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useBoolean(false);
+  const [agree, setAgree] = useState(false);
 
   useEffect(() => {
     setFocus('email');
@@ -59,7 +67,7 @@ export default function Registration() {
         message: t('registration_success'),
         severity: 'success',
       });
-      navigate(ROUTE_PATH.TO_LOGIN);
+      navigate('/');
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -68,75 +76,38 @@ export default function Registration() {
   };
 
   return (
-    <Page title='Registration'>
-      <Box component='form' onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant='h4' component='h1' gutterBottom>
-          Register
-        </Typography>
-        {_error && (
-          <Alert variant='filled' severity='warning'>
-            {_error}
-          </Alert>
-        )}
-        <ControllerTextField<RegistrationFormInputs>
-          controllerProps={{
-            name: 'email',
-            defaultValue: '',
-            control: control,
-          }}
-          textFieldProps={{
-            label: 'Email',
-            error: !!errors.email,
-            helperText: errors.email?.message,
-          }}
-          prefixIcon={Email}
+    <Page title='D-Work Đăng ký'>
+      {md ? (
+        <RegisterMobile 
+          route='/' 
+          onSubmit={onSubmit} 
+          handleSubmit={handleSubmit} 
+          loading={_loading} 
+          errors={_error} 
+          control={control} 
+          onToggle={() => setShowPassword.toggle()}
+          showPassword={showPassword}
+          onToggleConfirmPassword={() => setShowConfirmPassword.toggle()}
+          showConfirmPassword={showConfirmPassword}
+          agree={agree}
+          onAgreeChange={setAgree}
         />
-        <ControllerTextField<RegistrationFormInputs>
-          controllerProps={{
-            name: 'password',
-            defaultValue: '',
-            control: control,
-          }}
-          textFieldProps={{
-            label: 'Password',
-            type: 'password',
-            error: !!errors.password,
-            helperText: errors.password?.message,
-          }}
-          prefixIcon={Lock}
+      ) : (
+        <RegisterDesktop 
+          route='/' 
+          onSubmit={onSubmit} 
+          handleSubmit={handleSubmit} 
+          loading={_loading} 
+          errors={_error} 
+          control={control} 
+          onToggle={() => setShowPassword.toggle()}
+          showPassword={showPassword}
+          onToggleConfirmPassword={() => setShowConfirmPassword.toggle()}
+          showConfirmPassword={showConfirmPassword}
+          agree={agree}
+          onAgreeChange={setAgree}
         />
-        <ControllerTextField<RegistrationFormInputs>
-          controllerProps={{
-            name: 'confirmPassword',
-            defaultValue: '',
-            control: control,
-          }}
-          textFieldProps={{
-            label: 'Confirm Password',
-            type: 'password',
-            error: !!errors.confirmPassword,
-            helperText: errors.confirmPassword?.message,
-          }}
-          prefixIcon={Lock}
-        />
-        <LoadingButton
-          loading={_loading}
-          type='submit'
-          variant='contained'
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Register
-        </LoadingButton>
-        <Button
-          onClick={() => navigate(`/${ROUTE_PATH.AUTH}/${ROUTE_PATH.LOGIN}`)}
-          variant='outlined'
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Back to login
-        </Button>
-      </Box>
+      )} 
     </Page>
   );
 }

@@ -28,8 +28,11 @@ import { useAppDispatch } from '@/store';
 import { setAccessToken } from '@/utils/AuthHelper';
 import Logger from '@/utils/Logger';
 import { COLORS } from '@/constants/colors';
+import useBreakpoints from '@/hooks/useBreakpoints';
+import LoginMobile from '@/layouts/Breakpoints/Mobile/LoginMobile';
+import LoginDesktop from '@/layouts/Breakpoints/Desktop/LoginDesktop';
 
-interface LoginFormInputs {
+export interface LoginFormInputs {
   email: string;
   password: string;
 }
@@ -43,6 +46,7 @@ export default function Login() {
   } = useForm<LoginFormInputs>({
     resolver: yupResolver(loginSchema),
   });
+  const md = useBreakpoints('md');
   const { t } = useTranslation('auth');
   const [_loading, setLoading] = useBoolean();
   const dispatch = useAppDispatch();
@@ -51,6 +55,7 @@ export default function Login() {
   const notify = useNotification();
   const [_error, setError] = useState('');
   const [showPassword, setShowPassword] = useBoolean(false);
+  const [remember, setRemember] = useState(false);
 
   useEffect(() => {
     setFocus('email');
@@ -92,8 +97,35 @@ export default function Login() {
   };
 
   return (
-    <Page title='D-Work Login'>
-      <Box>
+    <Page title='D-Work Đăng nhập'>
+      {md ? (
+        <LoginMobile 
+          route={ROUTE_PATH.REGISTRATION} 
+          loading={_loading} 
+          remember={remember} 
+          onRememberChange={setRemember} 
+          onToggle={() => setShowPassword.toggle()} 
+          showPassword={showPassword} 
+          control={control} 
+          onSubmit={onSubmit} 
+          errors={errors} 
+          handleSubmit={handleSubmit}
+        />
+      ) : (
+        <LoginDesktop 
+          route={ROUTE_PATH.REGISTRATION} 
+          loading={_loading} 
+          remember={remember} 
+          onRememberChange={setRemember} 
+          onToggle={() => setShowPassword.toggle()} 
+          showPassword={showPassword} 
+          control={control} 
+          onSubmit={onSubmit} 
+          errors={errors} 
+          handleSubmit={handleSubmit} 
+        />
+      )}    
+      {/* <Box>
         <Typography
           component='h1'
           variant='h4'
@@ -108,8 +140,8 @@ export default function Login() {
         <Alert variant='filled' severity='warning'>
           {_error}
         </Alert>
-      )}
-      <Box
+      )} */}
+      {/* <Box
         component='form'
         onSubmit={handleSubmit(onSubmit)}
         sx={{
@@ -188,7 +220,7 @@ export default function Login() {
         >
           Đăng nhập
         </LoadingButton>
-      </Box>
+      </Box> */}
     </Page>
   );
 }

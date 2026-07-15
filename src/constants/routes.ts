@@ -1,4 +1,5 @@
 export const ROUTE_PATH = {
+  ROOT: 'd-work',
   HOME: '/',
   PRODUCTS: '/products',
   TO_PROFILE: '/profile',
@@ -70,7 +71,7 @@ export const ROUTE_PATH = {
   AUTH: 'auth',
   LOGIN: 'login',
   TO_LOGIN: '/auth/login',
-  REGISTRATION: 'registration',
+  REGISTRATION: 'register',
   FORGOT_PASSWORD: 'forgot-password',
   CHANGE_PASSWORD: 'change-password',
 

@@ -14,12 +14,12 @@ import Page from '@/components/Page';
 
 import { ROUTE_PATH } from '@/constants/routes';
 import useBoolean from '@/hooks/useBoolean';
-import { usernameValidateSchema } from '@/schemas/auth-schema';
+import { emailValidateSchema } from '@/schemas/auth-schema';
 import { verifyEmail } from '@/services/auth-service';
 import { COLORS } from '@/constants/colors';
 
 const forgotPasswordSchema = object().shape({
-  username: usernameValidateSchema,
+  username: emailValidateSchema,
 });
 
 type ForgotPasswordFormInputs = {
