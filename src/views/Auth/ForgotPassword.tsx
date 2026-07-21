@@ -17,13 +17,16 @@ import useBoolean from '@/hooks/useBoolean';
 import { emailValidateSchema } from '@/schemas/auth-schema';
 import { verifyEmail } from '@/services/auth-service';
 import { COLORS } from '@/constants/colors';
+import useBreakpoints from '@/hooks/useBreakpoints';
+import ForgotPasswordMobile from '@/layouts/Breakpoints/Mobile/ForgotPasswordMobile';
+import ForgotPasswordDesktop from '@/layouts/Breakpoints/Desktop/ForgotPasswordDesktop';
 
 const forgotPasswordSchema = object().shape({
-  username: emailValidateSchema,
+  email: emailValidateSchema,
 });
 
-type ForgotPasswordFormInputs = {
-  username: string;
+export type ForgotPasswordFormInputs = {
+  email: string;
 };
 export default function ForgotPassword() {
   const {
@@ -34,6 +37,7 @@ export default function ForgotPassword() {
   } = useForm<ForgotPasswordFormInputs>({
     resolver: yupResolver(forgotPasswordSchema),
   });
+  const bp = useBreakpoints('lg');
   const [_loading, setLoading] = useBoolean(false);
   const navigate = useNavigate();
   const [_hasErrors, setHasErrors] = useState<boolean | undefined>(undefined);
@@ -41,7 +45,7 @@ export default function ForgotPassword() {
   const { t } = useTranslation('auth');
 
   useEffect(() => {
-    setFocus('username');
+    setFocus('email');
   }, [setFocus]);
 
   const onSubmit = async (values: ForgotPasswordFormInputs) => {
@@ -64,7 +68,26 @@ export default function ForgotPassword() {
 
   return (
     <Page title='D.Work Quên mật khẩu'>
-      <Box
+      {bp ? (
+        <ForgotPasswordMobile
+          route='/'
+          onSubmit={onSubmit}
+          handleSubmit={handleSubmit}
+          loading={_loading}
+          errors={errors}
+          control={control}
+        />
+      ) : (
+        <ForgotPasswordDesktop
+          route='/'
+          onSubmit={onSubmit}
+          handleSubmit={handleSubmit}
+          loading={_loading}
+          errors={errors}
+          control={control}
+        />
+      )}
+      {/* <Box
         component='form'
         onSubmit={handleSubmit(onSubmit)}
         sx={{ maxWidth: 400, margin: 'auto' }}
@@ -118,7 +141,7 @@ export default function ForgotPassword() {
         >
           Quay lại đăng nhập
         </Button>
-      </Box>
+      </Box> */}
     </Page>
   );
 }

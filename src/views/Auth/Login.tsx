@@ -46,7 +46,7 @@ export default function Login() {
   } = useForm<LoginFormInputs>({
     resolver: yupResolver(loginSchema),
   });
-  const md = useBreakpoints('md');
+  const bp = useBreakpoints('lg');
   const { t } = useTranslation('auth');
   const [_loading, setLoading] = useBoolean();
   const dispatch = useAppDispatch();
@@ -98,7 +98,7 @@ export default function Login() {
 
   return (
     <Page title='D-Work Đăng nhập'>
-      {md ? (
+      {bp ? (
         <LoginMobile 
           route={ROUTE_PATH.REGISTRATION} 
           loading={_loading} 

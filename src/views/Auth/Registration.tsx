@@ -38,7 +38,7 @@ export default function Registration() {
   } = useForm<RegistrationFormInputs>({
     resolver: yupResolver(registrationSchema),
   });
-  const md = useBreakpoints('md');
+  const bp = useBreakpoints('lg');
   const password = watch('password');
   const [_loading, setLoading] = useBoolean();
   const navigate = useNavigate();
@@ -77,13 +77,13 @@ export default function Registration() {
 
   return (
     <Page title='D-Work Đăng ký'>
-      {md ? (
+      {bp ? (
         <RegisterMobile 
           route='/' 
           onSubmit={onSubmit} 
           handleSubmit={handleSubmit} 
           loading={_loading} 
-          errors={_error} 
+          errors={errors} 
           control={control} 
           onToggle={() => setShowPassword.toggle()}
           showPassword={showPassword}
@@ -98,7 +98,7 @@ export default function Registration() {
           onSubmit={onSubmit} 
           handleSubmit={handleSubmit} 
           loading={_loading} 
-          errors={_error} 
+          errors={errors} 
           control={control} 
           onToggle={() => setShowPassword.toggle()}
           showPassword={showPassword}

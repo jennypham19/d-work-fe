@@ -23,7 +23,7 @@ export type ForgotPasswordRequest = {
 };
 
 export type VerifyUsernameRequest = {
-  username: string;
+  email: string;
 };
 
 export type ResetPasswordResponse = Promise<HttpResponse<string>>;
