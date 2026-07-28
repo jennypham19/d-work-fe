@@ -48,6 +48,10 @@ export default function Registration() {
   const [showPassword, setShowPassword] = useBoolean(false);
   const [showConfirmPassword, setShowConfirmPassword] = useBoolean(false);
   const [agree, setAgree] = useState(false);
+  const [openDialogAndType, setOpenDialogAndType] = useState<{open: boolean, type: string}>({
+    open: false,
+    type: ''
+  })
 
   useEffect(() => {
     setFocus('email');
@@ -75,6 +79,15 @@ export default function Registration() {
     }
   };
 
+  // Term of Service & Privacy Policy
+  const handleOpenDialogAndType = (type: string) => {
+    setOpenDialogAndType({ open: true, type: type })
+  }
+
+  const handleCloseDialogAndType = (type: string) => {
+    setOpenDialogAndType({ open: false, type: type })
+  }
+
   return (
     <Page title='D-Work Đăng ký'>
       {bp ? (
@@ -91,6 +104,9 @@ export default function Registration() {
           showConfirmPassword={showConfirmPassword}
           agree={agree}
           onAgreeChange={setAgree}
+          onOpenDialogAndType={handleOpenDialogAndType}
+          onCloseOpenDialogAndType={handleCloseDialogAndType}
+          openDialogAndType={openDialogAndType}
         />
       ) : (
         <RegisterDesktop 

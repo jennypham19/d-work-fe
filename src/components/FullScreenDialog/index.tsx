@@ -46,7 +46,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
       {...props}
     >
       {/* Header */}
-      <AppBar sx={{ position: "relative", bgcolor: COLORS.BUTTON, height: 50 }}>
+      <AppBar sx={{ position: "relative", bgcolor: COLORS.BASE, height: 50 }}>
         <Toolbar>
           <Typography sx={{ flex: 1 }} variant="body1" component="div">
             {title || "Dialog"}

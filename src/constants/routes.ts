@@ -68,12 +68,15 @@ export const ROUTE_PATH = {
   SETTING: 'setting',
   EXPERIMENT: 'experiment',
 
+  //auth
   AUTH: 'auth',
   LOGIN: 'login',
   TO_LOGIN: '/auth/login',
   REGISTRATION: 'register',
   FORGOT_PASSWORD: 'forgot-password',
   CHANGE_PASSWORD: 'change-password',
+  TERM_OF_SERVICE: 'term-of-service',
+  PRIVACY_POLICY: 'privacy-policy',
 
   CREATE: 'create',
   UPDATE: 'update',

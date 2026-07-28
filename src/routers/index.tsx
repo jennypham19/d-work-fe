@@ -6,14 +6,18 @@ import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 import Loadable from '@/components/Loadable';
 import PublicRoute from '@/components/PublicRoute';
 
+import { ROUTE_PATH } from '@/constants/routes';
+
+// Layout
 import AuthLayout from '@/layouts/Auth/AuthLayout';
 import DashboardLayout from '@/layouts/Dashboard';
-import ChangePassword from '@/views/Auth/ChangePassword';
-import ForgotPassword from '@/views/Auth/ForgotPassword';
+import AuthGuard from '@/components/AuthGuard';
+
+// Auth
 import Login from '@/views/Auth/Login';
 import Registration from '@/views/Auth/Registration';
-import { ROUTE_PATH } from '@/constants/routes';
-import AuthGuard from '@/components/AuthGuard';
+import ChangePassword from '@/views/Auth/ChangePassword';
+import ForgotPassword from '@/views/Auth/ForgotPassword';
 
 // Home
 const Home = Loadable(lazy(() => import('@/views/Home')));
@@ -59,9 +63,13 @@ const routes: RouteObject[] = [
           // { index: true, element: <Navigate to={ROUTE_PATH.LOGIN} replace /> },
           // { path: ROUTE_PATH.LOGIN, element: <Login /> },
           { index: true, element: <Login/> },
-          { path: ROUTE_PATH.REGISTRATION, element: <Registration /> },
+          { 
+            path: ROUTE_PATH.REGISTRATION, 
+            element: <Registration />,
+          },
           { path: ROUTE_PATH.FORGOT_PASSWORD, element: <ForgotPassword /> },
           { path: ROUTE_PATH.CHANGE_PASSWORD, element: <ChangePassword /> },
+
         ],
       }
     ]
